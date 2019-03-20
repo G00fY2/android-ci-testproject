@@ -1,5 +1,7 @@
 language: android
 jdk: openjdk8
+dist: xenial
+group: edge
 
 android:
   components:
