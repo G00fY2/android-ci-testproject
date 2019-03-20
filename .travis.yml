@@ -1,8 +1,5 @@
 language: android
-os: linux
-dist: xenial
 jdk: openjdk8
-sudo: true
 
 android:
   components:
@@ -14,9 +11,3 @@ android:
     # Additional components
     - extra-google-m2repository
     - extra-android-m2repository
-
-before_install:
-  - sudo apt-get install wget build-essential openjdk-8-jdk python cmake libssl-dev
-  - PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//')
-  - JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
-  - java -version
