@@ -1,4 +1,9 @@
 language: android
+os: linux
+dist: xenial
+jdk: openjdk8
+sudo: true
+
 android:
   components:
     - tools
@@ -9,9 +14,6 @@ android:
     # Additional components
     - extra-google-m2repository
     - extra-android-m2repository
-
-dist: xenial
-jdk: openjdk8
 
 before_install:
   - sudo apt-get install wget build-essential openjdk-8-jdk python cmake libssl-dev
