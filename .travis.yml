@@ -28,7 +28,7 @@ before_install:
   # add SDK Tools path variable
   - export PATH=$PATH:$HOME/sdk/tools/bin
   # create empty cfg file to prevent sdkmanager warning message
-  - mkdir $HOME/.android & touch $HOME/.android/repositories.cfg
+  - mkdir $HOME/.android && touch $HOME/.android/repositories.cfg
 
 install:
   # install SDK Platform-Tools, SDK Platform, SDK Build-Tools, Android Support Repository, Google Repository
