@@ -54,9 +54,7 @@ before_script:
   # create dir for gradle settings
   - mkdir -p $HOME/.gradle
   # disable gradle deamon for current user
-  - echo "org.gradle.daemon=false" >> $HOME/.gradle/gradle.properties
-  # set gradle log format to rich
-  - echo "\norg.gradle.console=verbose" >> $HOME/.gradle/gradle.properties
+  - echo "org.gradle.console=plain" >> $HOME/.gradle/gradle.properties
 
 script:
-  - ./gradlew assembleDebug --console=plain
+  - ./gradlew assembleDebug
