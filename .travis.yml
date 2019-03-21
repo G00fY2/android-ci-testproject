@@ -51,9 +51,12 @@ install:
 before_script:
   # set executable flag for gradle wrapper
   - chmod +x gradlew
-  # disable gradle deamon for current user
+  # create dir for gradle settings
   - mkdir -p $HOME/.gradle
+  # disable gradle deamon for current user
   - echo "org.gradle.daemon=false" >> $HOME/.gradle/gradle.properties
+  # set gradle log format to rich
+  - echo "\norg.gradle.console=rich" >> $HOME/.gradle/gradle.properties
 
 script:
   - ./gradlew assembleDebug
