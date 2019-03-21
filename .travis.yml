@@ -24,11 +24,11 @@ before_install:
   # create new /sdk folder in /home/travis dir
   - mkdir $HOME/sdk
   # unzip SDK Tools into sdk folder
-  - unzip $ANDROID_SDK_FILENAME -d $HOME/sdk
+  - unzip -qq $ANDROID_SDK_FILENAME -d $HOME/sdk
   # add SDK Tools path variable
   - export PATH=$PATH:$HOME/sdk/tools/bin
   # create empty cfg file to prevent sdkmanager warning message
-  - mkdir $HOME/.android && touch $HOME/.android/repositories.cfg
+  - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
 
 install:
   # SDK Platform-Tools
