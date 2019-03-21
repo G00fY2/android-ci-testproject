@@ -59,4 +59,4 @@ before_script:
   - echo "\norg.gradle.console=verbose" >> $HOME/.gradle/gradle.properties
 
 script:
-  - ./gradlew assembleDebug
+  - ./gradlew assembleDebug --console=plain
