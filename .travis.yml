@@ -1,32 +1,15 @@
-language: android
-jdk: openjdk8
-dist: trusty
-group: stable
+language: minimal
+dist: xenial
+sudo: required
 
-android:
-  components:
-    - tools
-    - platform-tool
-    - build-tools-28.0.3
-    - android-28
-
-    # Additional components
-    - extra-google-m2repository
-    - extra-android-m2repository
+env:
+  global:
+    - ANDROID_SDK_FILENAME=sdk-tools-linux-4333796.zip
 
 before_install:
-  - touch $HOME/.android/repositories.cfg
-
-install: sdkmanager --list || true
-
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
-
-script: ./gradlew assembleDebug
+  - sudo apt-get update
+  - sudo apt-get install openjdk-8-jdk
+  - java -version
+  - sudo update-alternatives --config java
+  - wget https://dl.google.com/android/repository/$ANDROID_SDK_FILENAME
+  - unzip $ANDROID_SDK_FILENAME
