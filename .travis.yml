@@ -16,6 +16,7 @@ before_install:
   # install OpenJDK8
   #- sudo apt-get update
   #- sudo apt-get install openjdk-8-jdk
+  - sudo dpkg -s openjdk-8-jdk
   - java -version || true
   # print available java versions with their path (should only show java-8-openjdk-amd64)
   - sudo update-alternatives --config java || true
