@@ -4,18 +4,41 @@ sudo: required
 
 env:
   global:
+    # https://developer.android.com/studio#downloads
+    # SDK Tools, Revision 26.1.1
     - ANDROID_SDK_FILENAME=sdk-tools-linux-4333796.zip
+    - ANDROID_PLATTFORM_SDK=28
+    - ANDROID_BUILD_TOOLS=28.0.3
 
 before_install:
-  - pwd
+  # install OpenJDK8
   - sudo apt-get update
   - sudo apt-get install openjdk-8-jdk
   - java -version
-  - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+  # print available java versions with their path (should only show java-8-openjdk-amd64)
   - sudo update-alternatives --config java
+  # set JAVA_HOME path
+  - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+  # download Android SDK Tools
   - wget https://dl.google.com/android/repository/$ANDROID_SDK_FILENAME
+  # create new /sdk folder in /home/travis dir
   - mkdir $HOME/sdk
+  # unzip SDK Tools into sdk folder
   - unzip $ANDROID_SDK_FILENAME -d $HOME/sdk
-  - ls
+  # add SDK Tools path variable
   - export PATH=$PATH:$HOME/sdk/tools/bin
+  # create empty cfg file to prevent sdkmanager warning message
+  - touch $HOME/.android/repositories.cfg
+
+install:
+  # install SDK Platform-Tools, SDK Platform, SDK Build-Tools, Android Support Repository, Google Repository
+  - sdkmanager "platform-tools" "platforms;android-$ANDROID_PLATTFORM_SDK" "build-tools;$ANDROID_BUILD_TOOLS" "extras;android;m2repository" "extras;google;m2repository"
+  # list installed and available packages
   - sdkmanager --list
+
+before_script:
+  # set executable flag for gradle wrapper
+  - chmod +x gradlew
+
+script:
+  - ./gradlew assembleDebug
