@@ -1,5 +1,7 @@
 language: minimal
+os: linux
 dist: xenial
+group: stable
 sudo: required
 
 env:
@@ -50,7 +52,8 @@ before_script:
   # set executable flag for gradle wrapper
   - chmod +x gradlew
   # disable gradle deamon for current user
-  - mkdir -p ~/.gradle && echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
+  - mkdir -p $HOME/.gradle
+  - echo "org.gradle.daemon=false" >> $HOME/.gradle/gradle.properties
 
 script:
   - ./gradlew assembleDebug
