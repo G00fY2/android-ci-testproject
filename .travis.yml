@@ -17,7 +17,7 @@ before_install:
   #- sudo apt-get update
   #- sudo apt-get install openjdk-8-jdk
   - dpkg -s openjdk-8-jdk >/dev/null 2>&1 || sudo apt-get install openjdk-8-jdk
-  - dpkg -s openjdk-7-jdk >/dev/null 2>&1 || sudo apt-get install openjdk-7-jdk
+  - dpkg -s geogebra >/dev/null 2>&1 || sudo apt-get install geogebra
   - java -version
   # print available java versions with their path (should only show java-8-openjdk-amd64)
   - sudo update-alternatives --config java || true
