@@ -31,8 +31,16 @@ before_install:
   - mkdir $HOME/.android && touch $HOME/.android/repositories.cfg
 
 install:
-  # install SDK Platform-Tools, SDK Platform, SDK Build-Tools, Android Support Repository, Google Repository
-  - sdkmanager "platform-tools" "platforms;android-$ANDROID_PLATTFORM_SDK" "build-tools;$ANDROID_BUILD_TOOLS" "extras;android;m2repository" "extras;google;m2repository"
+  # SDK Platform-Tools
+  - yes | sdkmanager "platform-tools"
+  # SDK Platform
+  - yes | sdkmanager "platforms;android-$ANDROID_PLATTFORM_SDK"
+  # SDK Build-Tools
+  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS"
+  # Android Support Repository
+  - yes | sdkmanager "extras;android;m2repository"
+  #Google Repository
+  - yes | sdkmanager "extras;google;m2repository"
   # list installed and available packages
   - sdkmanager --list
 
