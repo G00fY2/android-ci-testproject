@@ -13,11 +13,11 @@ env:
     - ANDROID_BUILD_TOOLS=28.0.3
 
 before_install:
-  # install OpenJDK8
+  # install OpenJDK8 / currently preinstalled
   #- sudo apt-get update
   #- sudo apt-get install openjdk-8-jdk
-  - sudo dpkg -s openjdk-8-jdk
-  - java -version || true
+  - java -version
+  - echo $JAVA_HOME
   # print available java versions with their path (should only show java-8-openjdk-amd64)
   - sudo update-alternatives --config java || true
   # set JAVA_HOME path
