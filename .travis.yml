@@ -11,7 +11,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install openjdk-8-jdk
   - java -version
-  - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+  - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
   - sudo update-alternatives --config java
   - wget https://dl.google.com/android/repository/$ANDROID_SDK_FILENAME
   - mkdir $HOME/sdk
@@ -19,4 +19,3 @@ before_install:
   - ls
   - export PATH=$PATH:$HOME/sdk/tools/bin
   - sdkmanager --list
-  
