@@ -53,7 +53,9 @@ before_script:
   - chmod +x gradlew
   # create dir for gradle settings
   - mkdir -p $HOME/.gradle
-  # disable gradle deamon for current user
+  # disable gradle daemon for current user
+  - echo "org.gradle.daemon=false" >> $HOME/.gradle/gradle.properties
+  # set gradle log format to plain
   - echo "org.gradle.console=plain" >> $HOME/.gradle/gradle.properties
 
 script:
