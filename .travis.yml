@@ -27,20 +27,22 @@ before_install:
   - unzip -q $ANDROID_SDK_FILENAME -d $HOME/sdk
   # add SDK Tools path variable
   - export PATH=$PATH:$HOME/sdk/tools/bin
+  # set ANDROID_HOME path
+  - export ANDROID_HOME=$HOME/sdk
   # create empty cfg file to prevent sdkmanager warning message
   - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
 
 install:
   # SDK Platform-Tools
-  - yes | sdkmanager "platform-tools" > /dev/null
+  - yes | sdkmanager "platform-tools" > /dev/null 2>&1
   # SDK Platform
-  - yes | sdkmanager "platforms;android-$ANDROID_PLATTFORM_SDK" > /dev/null
+  - yes | sdkmanager "platforms;android-$ANDROID_PLATTFORM_SDK" > /dev/null 2>&1
   # SDK Build-Tools
-  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS" > /dev/null
+  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS" > /dev/null 2>&1
   # Android Support Repository
-  - yes | sdkmanager "extras;android;m2repository" > /dev/null
+  - yes | sdkmanager "extras;android;m2repository" > /dev/null 2>&1
   #Google Repository
-  - yes | sdkmanager "extras;google;m2repository" > /dev/null
+  - yes | sdkmanager "extras;google;m2repository" > /dev/null 2>&1
   # list installed and available packages
   - sdkmanager --list
 
