@@ -14,7 +14,7 @@ env:
 
 before_install:
   # checks if OpenJDK8 is installed and installs otherwise
-  - dpkg -s openjdk-8-jdk >/dev/null 2>&1 || sudo apt-get update && sudo apt-get install openjdk-8-jdk
+  - if dpkg -s openjdk-8-jdk >/dev/null 2>&1; then sudo apt-get update; sudo apt-get install openjdk-8-jdk; fi
   - java -version
   # print available java versions with their path (should only show java-8-openjdk-amd64)
   - sudo update-alternatives --config java || true
