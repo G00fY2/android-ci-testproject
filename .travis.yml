@@ -13,8 +13,8 @@ env:
     - ANDROID_BUILD_TOOLS=28.0.3
 
 before_install:
-  # checks if OpenJDK8 is installed and installs otherwise
-  - if ! dpkg -s openjdk-8-jdk >/dev/null 2>&1; then sudo apt-get update; sudo apt-get install openjdk-8-jdk; fi
+  # checks if OpenJDK8 is installed and installs if missing
+  - if ! dpkg -s openjdk-8-jdk >/dev/null; then sudo apt-get update; sudo apt-get install openjdk-8-jdk; fi
   - java -version
   # print available java versions with their path (should only show java-8-openjdk-amd64)
   - sudo update-alternatives --config java || true
@@ -35,15 +35,15 @@ before_install:
 
 install:
   # SDK Platform-Tools
-  - yes | sdkmanager "platform-tools" >/dev/null 2>&1
+  - yes | sdkmanager "platform-tools" >/dev/null
   # SDK Platform
-  - yes | sdkmanager "platforms;android-$ANDROID_PLATTFORM_SDK" >/dev/null 2>&1
+  - yes | sdkmanager "platforms;android-$ANDROID_PLATTFORM_SDK" >/dev/null
   # SDK Build-Tools
-  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS" >/dev/null 2>&1
+  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS" >/dev/null
   # Android Support Repository
-  - yes | sdkmanager "extras;android;m2repository" >/dev/null 2>&1
+  - yes | sdkmanager "extras;android;m2repository" >/dev/null
   #Google Repository
-  - yes | sdkmanager "extras;google;m2repository" >/dev/null 2>&1
+  - yes | sdkmanager "extras;google;m2repository" >/dev/null
   # list installed and available packages
   - sdkmanager --list
 
