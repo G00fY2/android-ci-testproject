@@ -7,9 +7,14 @@ env:
     - ANDROID_SDK_FILENAME=sdk-tools-linux-4333796.zip
 
 before_install:
+  - pwd
   - sudo apt-get update
   - sudo apt-get install openjdk-8-jdk
   - java -version
+  - echo "JAVA HOME $JAVA_HOME"
   - sudo update-alternatives --config java
   - wget https://dl.google.com/android/repository/$ANDROID_SDK_FILENAME
   - unzip $ANDROID_SDK_FILENAME
+  - ls
+  - export PATH=$PATH:$HOME/tools/bin
+  
