@@ -63,3 +63,4 @@ script:
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - ls $HOME/.gradle/wrapper/dists -1t | tail -n +2 | xargs rm -f
