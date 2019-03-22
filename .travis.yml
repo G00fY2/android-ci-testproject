@@ -6,11 +6,17 @@ sudo: required
 
 env:
   global:
-    # https://developer.android.com/studio#downloads
-    # SDK Tools, Revision 26.1.1
-    - ANDROID_SDK_FILENAME=sdk-tools-linux-4333796.zip
-    - ANDROID_PLATTFORM_SDK=28
-    - ANDROID_BUILD_TOOLS=28.0.3
+    - ANDROID_API_LEVEL=28
+    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+    # SDK Tools Revision 26.1.1
+    - ANDROID_SDK_TOOLS=sdk-tools-linux-4333796.zip
+    # For Updates check https://developer.android.com/studio#downloads
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache/
 
 before_install:
   # check if OpenJDK8 is installed and install if missing
@@ -21,9 +27,9 @@ before_install:
   # set JAVA_HOME path
   - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
   # download und unzip Android SDK Tools
-  - wget https://dl.google.com/android/repository/$ANDROID_SDK_FILENAME
+  - wget https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
   - mkdir $HOME/sdk
-  - unzip -q $ANDROID_SDK_FILENAME -d $HOME/sdk
+  - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
   # add SDK Tools path variable
   - export PATH=$PATH:$HOME/sdk/tools/bin
   # set ANDROID_HOME path
@@ -35,9 +41,9 @@ install:
   # SDK Platform-Tools
   - yes | sdkmanager "platform-tools" >/dev/null
   # SDK Platform
-  - yes | sdkmanager "platforms;android-$ANDROID_PLATTFORM_SDK" >/dev/null
+  - yes | sdkmanager "platforms;android-$ANDROID_API_LEVEL" >/dev/null
   # SDK Build-Tools
-  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS" >/dev/null
+  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
   # list installed and available packages
   - sdkmanager --list
 
@@ -53,3 +59,7 @@ before_script:
 
 script:
   - ./gradlew assembleDebug
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
