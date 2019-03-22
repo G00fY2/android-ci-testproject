@@ -17,8 +17,10 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install openjdk-8-jdk
   - java -version
-  # print available java paths and only set JAVA_HOME if contains expected one
-  - sudo update-alternatives --config java | grep -q '/usr/lib/jvvm/java-8-openjdk-amd64' && export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 | true
+  # print available java versions with their path (should only show java-8-openjdk-amd64)
+  - sudo update-alternatives --config java
+  # set JAVA_HOME path
+  - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
   # download Android SDK Tools
   - wget https://dl.google.com/android/repository/$ANDROID_SDK_FILENAME
   # create new /sdk folder in /home/travis dir
