@@ -61,8 +61,8 @@ script:
   - ./gradlew assembleDebug
 
 before_cache:
-  - ls -d $HOME/.gradle/wrapper/dists -1t
-  - ls -d $HOME/.gradle/wrapper/dists -1t | tail -n +2
+  - ls -d $HOME/.gradle/wrapper/dists/* -1t
+  - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-  - ls -d $HOME/.gradle/wrapper/dists -1t | tail -n +2 | xargs rm -f
+  - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -f
