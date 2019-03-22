@@ -19,7 +19,7 @@ before_install:
   # set JAVA_HOME path
   - export JAVA_HOME=/usr/lib/jvm/javca-8-openjdk-amd64
   # print available java versions with their path and return error if JAVA_HOME is missing
-  - sudo update-alternatives --config java | grep -q $JAVA_HOME
+  - if ! sudo update-alternatives --config java | grep -q $JAVA_HOME; then echo "Invalid JAVA_HOME path"; exit 1; fi
   # download Android SDK Tools
   - wget https://dl.google.com/android/repository/$ANDROID_SDK_FILENAME
   # create new /sdk folder in /home/travis dir
