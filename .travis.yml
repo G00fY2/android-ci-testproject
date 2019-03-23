@@ -59,7 +59,6 @@ script:
   - ./gradlew assembleDebug
 
 before_cache:
-  - find $HOME/.gradle/caches/ -type f -name '*.lock'
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
   # only cache last gradle version used by the wrapper
