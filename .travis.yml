@@ -3,15 +3,13 @@ os: linux
 dist: xenial
 group: stable
 sudo: required
-
 env:
   global:
-    - ANDROID_API_LEVEL=28
-    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+  - ANDROID_API_LEVEL=28
+  - ANDROID_BUILD_TOOLS_VERSION=28.0.3
     # SDK Tools Revision 26.1.1
-    - ANDROID_SDK_TOOLS=sdk-tools-linux-4333796.zip
+  - ANDROID_SDK_TOOLS=sdk-tools-linux-4333796.zip
     # For Updates check https://developer.android.com/studio#downloads
-
 cache:
   directories:
     - $HOME/.gradle/caches/
@@ -19,64 +17,73 @@ cache:
     - $HOME/.android/build-cache/
 
 stages:
-  - name: Build debug
-    if: branch IN (develop, master)
-  - name: Build and deploy release
-    if: branch = master
+- name: Build debug
+  if: branch IN (develop, master)
+- name: Build and deploy release
+  if: branch = master
 
-setup_android: &setup_android
-  before_install:
-  # check if OpenJDK8 is installed and install if missing
-  - if ! dpkg -s openjdk-8-jdk >/dev/null 2>&1; then sudo apt-get update; sudo apt-get install openjdk-8-jdk; fi
-  - java -version
-  # print available java versions with their path (must contain java-8-openjdk-amd64)
-  - sudo update-alternatives --config java
-  # set JAVA_HOME path
-  - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-  # download und unzip Android SDK Tools
-  - wget https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
-  - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
-  # set SDK Tools path variable and ANDROID_HOME
-  - export PATH=$PATH:$HOME/sdk/tools/bin
-  - export ANDROID_HOME=$HOME/sdk
-  # create empty cfg file to prevent sdkmanager warning message
-  - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
-
-  install:
-  # latest SDK Platform-Tools
-  - yes | sdkmanager "platform-tools" >/dev/null
-  # defined SDK Platform
-  - yes | sdkmanager "platforms;android-$ANDROID_API_LEVEL" >/dev/null
-  # defined SDK Build-Tools
-  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
-  # list installed and available packages
-  - sdkmanager --list
-
-  before_script:
-  # set executable flag for gradle wrapper
-  - chmod +x gradlew
-  # create dir for gradle settings
-  - mkdir -p $HOME/.gradle
-  # disable gradle daemon for current user
-  - echo "org.gradle.daemon=false" >> $HOME/.gradle/gradle.properties
-  # set gradle log format to plain
-  - echo "org.gradle.console=plain" >> $HOME/.gradle/gradle.properties
-
-cleanup_cache: &cleanup_cache
-  before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-  # only cache last gradle version used by the wrapper
-  # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
-  - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
+before_install: &before_install
+# check if OpenJDK8 is installed and install if missing
+- if ! dpkg -s openjdk-8-jdk >/dev/null 2>&1; then sudo apt-get update; sudo apt-get install openjdk-8-jdk; fi
+- java -version
+# print available java versions with their path (must contain java-8-openjdk-amd64)
+- sudo update-alternatives --config java
+# set JAVA_HOME path
+- export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+# download und unzip Android SDK Tools
+- wget https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
+- unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
+# set SDK Tools path variable and ANDROID_HOME
+- export PATH=$PATH:$HOME/sdk/tools/bin
+- export ANDROID_HOME=$HOME/sdk
+# create empty cfg file to prevent sdkmanager warning message
+- mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
+install: &install
+# latest SDK Platform-Tools
+- yes | sdkmanager "platform-tools" >/dev/null
+# defined SDK Platform
+- yes | sdkmanager "platforms;android-$ANDROID_API_LEVEL" >/dev/null
+# defined SDK Build-Tools
+- yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
+# list installed and available packages
+- sdkmanager --list
+before_script: &before_script
+# set executable flag for gradle wrapper
+- chmod +x gradlew
+# create dir for gradle settings
+- mkdir -p $HOME/.gradle
+# disable gradle daemon for current user
+- echo "org.gradle.daemon=false" >> $HOME/.gradle/gradle.properties
+# set gradle log format to plain
+- echo "org.gradle.console=plain" >> $HOME/.gradle/gradle.properties
+before_cache: &before_cache
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+# only cache last gradle version used by the wrapper
+# list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
+- ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
 
 jobs:
   include:
-    - stage: Build debug
-      <<: *setup_android
-      script: ./gradlew assembleDebug
-      <<: *cleanup_cache
-    - stage: Build and deploy release
-      <<: *setup_android
-      script: ./gradlew assembleRelease
-      <<: *cleanup_cache
+  - stage: Build debug
+    before_install: *before_install
+    install: *install
+    before_script: *before_script
+    script: "./gradlew assembleDebug"
+    before_cache: *before_cache
+  - stage: Build and deploy release
+    before_install: *before_install
+    install: *install
+    before_script: *before_script
+    script: "./gradlew assembleRelease"
+    before_cache: *before_cache
+deploy:
+  provider: releases
+  on:
+    repo: G00fY2/android-ci-testproject
+  api_key:
+    secure: F/ZJrNRJjfGkR+BYveoC0ecfnZjHv7AkizDo+e0LQ4skcYjBPx21hr8xMhftdZNz14/ZoWIQoOsA4guVNmMPH7xnoptmjkoV8N8T0POZlJfbqfbW9UCYzi7/Mi8B2Gk0tJJwWOXOiWIgbirS0/0xUAoXvL7djoU5JnikErd370GhV/z865fa3KRGCq63liRcKBsaXicB+Ynm36A7zXw5HcK7cl0qj1SU0sqyw/sPrVX9j4GYUaY7DQk07Ip3NBcqwKRgJv/OJti9tEcgMfOhak41iMiUkyMTCZHZ68+FxQzZBKRmE5K8MVjVKopg7lTU5YpxvDA5AP5PWZtUGBcO4Y0BdaObuPfdZfEdA+c4AyXQ+mlB36Tbb+oosCX0QT1dVjt9Hc1GRXe/rpN1O6caN//ROwpBAoqiTEUGmUt9Spq4mwKZq2eRp8fbLAaxTjKwiI1F6R2FhNMAkicg86+VgrMlMR1ZUISYk2rlkYpbNJrYHYwKWo+MSFex5Q2hTnpl182einDgv2+MFZnn4y5A+1APAMehA2tKFW5I27JpZsZTD68F1WDt2AFCr+C/2hGr58/g8a5GZu/77Gne5FcFciBKCe5WN8V7+59tKR7CzHM6Fw/QJmuuo4++HtEZ7qFxvFFLFPYTDZmSWTj/4gk2D2iGi/1VOlqSWqhaivkDPm8=
+  file_glob: true
+  file: $TRAVIS_BUILD_DIR/app/build/outputs/apk/release/*.apk
+  skip_cleanup: true
+  overwrite: true
