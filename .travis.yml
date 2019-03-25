@@ -20,7 +20,7 @@ cache:
 
 stages:
   - name: Build debug
-    if: branch = develop
+    if: branch IN (develop, master)
   - name: Build and deploy release
     if: branch = master
 
