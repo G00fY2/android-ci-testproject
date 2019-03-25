@@ -111,7 +111,7 @@ jobs:
       # set gradle log format to plain
       - echo "org.gradle.console=plain" >> $HOME/.gradle/gradle.properties
 
-      script: ./gradlew assembleDebug
+      script: ./gradlew assembleRelease
 
       before_cache:
       - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
