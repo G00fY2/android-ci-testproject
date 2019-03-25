@@ -59,6 +59,12 @@ before_script: &before_script
 before_cache: &before_cache
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.bin
+- rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.lock
+- rm -f  $HOME/.gradle/caches/*/javaCompile/javaCompile.lock
+- rm -f  $HOME/.gradle/caches/journal-1/file-access.bin
+- rm -f  $HOME/.gradle/caches/journal-1/journal-1.lock
+- rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
 # only cache last gradle version used by the wrapper
 # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
 - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
@@ -87,4 +93,3 @@ jobs:
       overwrite: true
       on:
         repo: G00fY2/android-ci-testproject
-        tags: true
