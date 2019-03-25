@@ -55,8 +55,26 @@ before_script:
   # set gradle log format to plain
   - echo "org.gradle.console=plain" >> $HOME/.gradle/gradle.properties
 
-script:
-  - ./gradlew assembleDebug
+jobs:
+  include:
+    - stage: build-develop
+    name: "Build debug APK"
+    script: ./gradlew assembleDebug
+    if: branch = develop
+    script: ./gradlew assembleDebug
+
+    - stage: build-release
+    name: "Build signed APK and deploy to GitHub releases"
+    script: ./gradlew assembleDebug
+    if: branch = master
+    script: ./gradlew assembleDebug
+    # deploy:
+      # provider: releases
+      # api_key: "GITHUB OAUTH TOKEN"
+      # file: "FILE TO UPLOAD"
+      # skip_cleanup: true
+      # on:
+        # tags: true
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
