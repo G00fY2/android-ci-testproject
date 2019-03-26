@@ -93,6 +93,8 @@ jobs:
     before_install: *before_install
     install: *install
     before_script: *before_script
-    script: export APP_VERSION="$(./gradlew assembleRelease app:printVersionName | tail -1)"
+    script:
+    - export APP_VERSION="$(./gradlew assembleRelease app:printVersionName | tail -1)"
+    - echo $APP_VERSION
     before_cache: *before_cache
     deploy: *deploy
