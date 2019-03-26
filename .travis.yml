@@ -7,9 +7,8 @@ env:
   global:
   - ANDROID_API_LEVEL=28
   - ANDROID_BUILD_TOOLS_VERSION=28.0.3
-  # SDK Tools Revision 26.1.1
+  # For updates check developer.android.com/studio#downloads (current 26.1.1)
   - ANDROID_SDK_TOOLS=sdk-tools-linux-4333796.zip
-  # For Updates check https://developer.android.com/studio#downloads
 cache:
   directories:
   - $HOME/.gradle/caches/
@@ -22,7 +21,7 @@ stages:
 - name: Build and deploy release
   if: branch = master
 
-my_phases:
+android_phases:
 - phase: &before_install
   # check if OpenJDK8 is installed and install if missing
   - if ! dpkg -s openjdk-8-jdk >/dev/null 2>&1; then sudo apt-get update; sudo apt-get install openjdk-8-jdk; fi
@@ -69,6 +68,8 @@ my_phases:
   # only cache last gradle version used by the wrapper
   # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
   - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
+- phase: &before_deploy
+  - export APP_VERSION=$(./gradlew :app:printVersionName)
 - phase: &deploy
     provider: releases
     api_key:
@@ -76,9 +77,11 @@ my_phases:
     file_glob: true
     file: $TRAVIS_BUILD_DIR/app/build/outputs/apk/release/*.apk
     skip_cleanup: true
+    overwrite: true
     on:
       repo: G00fY2/android-ci-testproject
-    overwrite: true
+    name: "$APP_VERSION"
+    tag_name: "$APP_VERSION"
 
 jobs:
   include:
@@ -94,4 +97,5 @@ jobs:
     before_script: *before_script
     script: "./gradlew assembleRelease"
     before_cache: *before_cache
+    before_deploy: *before_deploy
     deploy: *deploy
