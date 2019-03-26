@@ -78,6 +78,7 @@ android_phases:
     overwrite: true
     on:
       repo: G00fY2/android-ci-testproject
+    name: $APP_VERSION
     tag_name: $APP_VERSION
 
 jobs:
@@ -92,6 +93,6 @@ jobs:
     before_install: *before_install
     install: *install
     before_script: *before_script
-    script: export APP_VERSION=$("./gradlew assembleRelease app:printVersionName" | tail -1)
+    script: export APP_VERSION="$(./gradlew assembleRelease app:printVersionName | tail -1)"
     before_cache: *before_cache
     deploy: *deploy
