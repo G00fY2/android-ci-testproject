@@ -78,7 +78,6 @@ android_phases:
     overwrite: true
     on:
       repo: G00fY2/android-ci-testproject
-    name: $APP_VERSION
     tag_name: $APP_VERSION
 
 jobs:
