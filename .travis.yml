@@ -68,6 +68,9 @@ android_phases:
   # only cache last gradle version used by the wrapper
   # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
   - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
+- phase: &before_deploy
+  - export APP_VERSION_NAME="$(grep -i 'Version Name: ' version_info.txt | sed 's/^.*: //')"
+  - export APP_VERSION_CODE="$(grep -i 'Version Code: ' version_info.txt | sed 's/^.*: //')"
 - phase: &deploy
     provider: releases
     api_key:
@@ -78,8 +81,8 @@ android_phases:
     overwrite: true
     on:
       repo: G00fY2/android-ci-testproject
-    name: $APP_VERSION
-    tag_name: $APP_VERSION
+    name: "$APP_VERSION_NAME ($APP_VERSION_CODE)"
+    tag_name: $APP_VERSION_NAME
 
 jobs:
   include:
@@ -93,8 +96,7 @@ jobs:
     before_install: *before_install
     install: *install
     before_script: *before_script
-    script:
-    - export APP_VERSION="$(./gradlew assembleRelease app:printVersionName | tail -1)"
-    - echo $APP_VERSION
+    script: "./gradlew assembleRelease printVersions >> $HOME/build_log.txt"
     before_cache: *before_cache
+    before_deploy: *before_deploy
     deploy: *deploy
