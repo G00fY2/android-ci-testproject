@@ -81,7 +81,7 @@ android_phases:
     overwrite: true
     on:
       branch: master
-    name: "$APP_VERSION_NAME ($APP_VERSION_CODE)"
+    name: $APP_VERSION_NAME
     tag_name: $APP_VERSION_NAME
 
 jobs:
