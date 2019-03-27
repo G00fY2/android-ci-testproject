@@ -80,7 +80,7 @@ android_phases:
     skip_cleanup: true
     overwrite: true
     on:
-      repo: G00fY2/android-ci-testproject
+      branch: master
     name: "$APP_VERSION_NAME ($APP_VERSION_CODE)"
     tag_name: $APP_VERSION_NAME
 
