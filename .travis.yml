@@ -83,7 +83,7 @@ android_phases:
       branch: master
     name: $APP_VERSION_NAME
     tag_name: $APP_VERSION_NAME
-    body: "Last build ($APP_VERSION_CODE):\s$TRAVIS_COMMIT_RANGE"
+    body: "Latest build $APP_VERSION_CODE"
 
 jobs:
   include:
