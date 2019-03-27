@@ -16,8 +16,8 @@ cache:
   - $HOME/.android/build-cache/
 
 stages:
-- name: Build debug
-  if: branch IN (develop, master)
+#- name: Build debug
+#  if: branch IN (develop, master)
 - name: Build and deploy release
   if: branch = master
 
@@ -69,6 +69,8 @@ android_phases:
   # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
   - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
 - phase: &before_deploy
+  - grep -i 'Version Name:\s' $TRAVIS_BUILD_DIR/version_info.txt
+  - grep -i 'Version Name:\s' $TRAVIS_BUILD_DIR/version_info.txt | sed 's/^.*:\s//'
   - export APP_VERSION_NAME="$(grep -i 'Version Name:\s' $TRAVIS_BUILD_DIR/version_info.txt | sed 's/^.*:\s//')"
   - export APP_VERSION_CODE="$(grep -i 'Version Code:\s' $TRAVIS_BUILD_DIR/version_info.txt | sed 's/^.*:\s//')"
 - phase: &deploy
