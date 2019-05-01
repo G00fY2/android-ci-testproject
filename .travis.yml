@@ -6,7 +6,7 @@ sudo: required
 env:
   global:
   - ANDROID_API_LEVEL=28
-  - ANDROID_BUILD_TOOLS_VERSION=29.0.0-rc2
+  - ANDROID_BUILD_TOOLS_VERSION=28.0.2
   # For updates check developer.android.com/studio#downloads (current 26.1.1)
   - ANDROID_SDK_TOOLS=sdk-tools-linux-4333796.zip
 cache:
@@ -93,13 +93,13 @@ jobs:
     before_install: *before_install
     install: *install
     before_script: *before_script
-    script: "./gradlew assembleDebug"
+    script: "./gradlew assembleDebug --scan"
     before_cache: *before_cache
   - stage: Build and deploy release
     before_install: *before_install
     install: *install
     before_script: *before_script
-    script: "./gradlew assembleRelease printVersions >> $HOME/build.log"
+    script: "./gradlew assembleRelease --scan printVersions >> $HOME/build.log"
     before_cache: *before_cache
     before_deploy: *before_deploy
     deploy: *deploy
