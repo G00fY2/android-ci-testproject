@@ -77,13 +77,11 @@ android_phases:
 - phase: &before_deploy
   - export LASTEST_TAG="$(git rev-list --tags --max-count=1)"
   - export APP_VERSION_NAME="$(git describe --tags $LASTEST_TAG | cut -d '-' -f 1)"
-  - echo $APP_VERSION_NAME
-  - export APP_VERSION_CODE="$(git rev-list --count HEAD)"
-  - echo $APP_VERSION_CODE
+  - export APP_VERSION_CODE="$(git rev-list --count master)"
   - export TAG_NAME=$APP_VERSION_NAME-$APP_VERSION_CODE
   - echo $TAG_NAME
-  - git config --global user.email "builds@travis-ci.com"
-  - git config --global user.name "Travis CI"
+  - git config --local user.name "Travis CI"
+  - git config --local user.email "builds@travis-ci.com"
   - git tag -a $TAG_NAME -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - git push https://$GH_TOKEN@github.com/G00fY2/android-ci-testproject.git $TAG_NAME >/dev/null
 - phase: &deploy
