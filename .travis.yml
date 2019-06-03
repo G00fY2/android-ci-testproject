@@ -78,7 +78,7 @@ android_phases:
   - export APP_VERSION_NAME="$git describe --tags `git rev-list --tags --max-count=1`" | cut -d '-' -f 1
   - export APP_VERSION_CODE="$git rev-list --count HEAD"
   - export TAG_NAME=$APP_VERSION_NAME-$APP_VERSION_CODE
-  - git tag -a $TAG_NAME -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+  - git tag $TAG_NAME -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - git push origin $TAG_NAME
 - phase: &deploy
     provider: releases
