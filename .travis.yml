@@ -94,7 +94,7 @@ android_phases:
       branch: master
     name: $TAG_NAME
     tag_name: $TAG_NAME
-    body: "Generated tag from TravisCI for build " $TRAVIS_BUILD_NUMBER
+    body: "Generated release from TravisCI for build $TRAVIS_BUILD_NUMBER"
 
 jobs:
   include:
