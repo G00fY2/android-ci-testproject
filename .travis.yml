@@ -75,9 +75,10 @@ android_phases:
   # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
   - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
 - phase: &before_deploy
-  - export APP_VERSION_NAME=$("git describe --tags `git rev-list --tags --max-count=1`" | cut -d '-' -f 1)
+  - export LASTEST_TAG="$(git rev-list --tags --max-count=1)"
+  - export APP_VERSION_NAME="$(git describe --tags $LASTEST_TAG | cut -d '-' -f 1)"
   - echo $APP_VERSION_NAME
-  - export APP_VERSION_CODE=$("git rev-list --count HEAD")
+  - export APP_VERSION_CODE="$(git rev-list --count HEAD)"
   - echo $APP_VERSION_CODE
   - export TAG_NAME=$APP_VERSION_NAME-$APP_VERSION_CODE
   - echo $TAG_NAME
