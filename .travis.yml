@@ -81,11 +81,8 @@ android_phases:
   - export APP_VERSION_NAME="$(git describe --tags $LASTEST_TAG | cut -d '-' -f 1)"
   - export APP_VERSION_CODE="$(git rev-list --count HEAD)"
   - export TAG_NAME=$APP_VERSION_NAME-$APP_VERSION_CODE
-  - echo $TAG_NAME
-  - git config --local user.name "Travis CI"
-  - git config --local user.email "builds@travis-ci.com"
   - git tag -a $TAG_NAME -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
-  - git push https://$GH_TOKEN@github.com/G00fY2/android-ci-testproject.git $TAG_NAME >/dev/null
+  - git push https://$GH_TOKEN@github.com/G00fY2/android-ci-testproject.git $TAG_NAME >/dev/null 2>&1
 - phase: &deploy
     provider: releases
     api_key:
@@ -100,7 +97,7 @@ android_phases:
       branch: master
     name: $TAG_NAME
     tag_name: $TAG_NAME
-    body: "Generated release from TravisCI for build $TRAVIS_BUILD_NUMBER"
+    body: "Generated release from Travis CI for build $TRAVIS_BUILD_NUMBER"
 
 jobs:
   include:
