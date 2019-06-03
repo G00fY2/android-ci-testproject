@@ -82,10 +82,10 @@ android_phases:
   - echo $APP_VERSION_CODE
   - export TAG_NAME=$APP_VERSION_NAME-$APP_VERSION_CODE
   - echo $TAG_NAME
-  - git config --local user.name "Thomas Wirth"
-  - git config --local user.email "thomas-w-@web.de"
+  - git config --global user.email "builds@travis-ci.com"
+  - git config --global user.name "Travis CI"
   - git tag -a $TAG_NAME -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
-  - git push origin $TAG_NAME
+  - git push https://$GH_TOKEN@github.com/G00fY2/android-ci-testproject.git $TAG_NAME >/dev/null
 - phase: &deploy
     provider: releases
     api_key:
