@@ -1,0 +1,18 @@
+ext.gitCommitCount = {
+    return 'git rev-list --count HEAD'.execute([], project.rootDir).text.trim().toInteger()
+}
+
+ext.gitTag = {
+    def revlist = 'git rev-list --tags --max-count=1'.execute([], project.rootDir).text.trim()
+    def versionName = ('git describe --tags ' + revlist.toString()).execute([], project.rootDir).text.trim()
+    if (versionName != null) {
+        def endIndex = versionName.indexOf("-")
+        if (endIndex > 0)
+            return versionName.substring(0, endIndex)
+        else {
+            return versionName
+        }
+    } else {
+        return "NO_VERSION"
+    }
+}

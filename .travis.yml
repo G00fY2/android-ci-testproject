@@ -58,21 +58,28 @@ android_phases:
   - echo "org.gradle.console=plain" >> $HOME/.gradle/gradle.properties
   # enable gradle build cache
   - echo "org.gradle.caching=true" >> $HOME/.gradle/gradle.properties
+  # log all gradle warnings
+  - echo "org.gradle.warning.mode=all" >> $HOME/.gradle/gradle.properties
 - phase: &before_cache
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
   - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.bin
   - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.lock
   - rm -f  $HOME/.gradle/caches/*/javaCompile/javaCompile.lock
+  - rm -f  $HOME/.gradle/caches/*/executionHistory/executionHistory.lock
   - rm -f  $HOME/.gradle/caches/journal-1/file-access.bin
   - rm -f  $HOME/.gradle/caches/journal-1/journal-1.lock
   - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
+  - rm -f  $HOME/.gradle/caches/user-id.txt.lock
   # only cache last gradle version used by the wrapper
   # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
   - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
 - phase: &before_deploy
-  - export APP_VERSION_NAME="$(grep -i 'Version Name:\s' $HOME/build.log | sed 's/^.*:\s//')"
-  - export APP_VERSION_CODE="$(grep -i 'Version Code:\s' $HOME/build.log | sed 's/^.*:\s//')"
+  - export APP_VERSION_NAME="$git describe --tags `git rev-list --tags --max-count=1`" | cut -d '-' -f 1
+  - export APP_VERSION_CODE="$git rev-list --count HEAD"
+  - export $TAG_NAME=$APP_VERSION_NAME-$APP_VERSION_CODE
+  - git tag -a $TAG_NAME -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+  - git push origin $TAG_NAME
 - phase: &deploy
     provider: releases
     api_key:
@@ -85,9 +92,9 @@ android_phases:
     overwrite: true
     on:
       branch: master
-    name: $APP_VERSION_NAME
-    tag_name: $APP_VERSION_NAME
-    body: "Latest build $APP_VERSION_CODE"
+    name: $TAG_NAME
+    tag_name: $TAG_NAME
+    body: "Generated tag from TravisCI for build " $TRAVIS_BUILD_NUMBER
 
 jobs:
   include:
@@ -101,7 +108,7 @@ jobs:
     before_install: *before_install
     install: *install
     before_script: *before_script
-    script: "./gradlew assembleRelease --scan printVersions >> $HOME/build.log"
+    script: "./gradlew assembleRelease --scan"
     before_cache: *before_cache
     before_deploy: *before_deploy
-    #deploy: *deploy
+    deploy: *deploy
