@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'eu.appcom.gradle.android-versioning'
 
 android {
     compileSdkVersion 28
@@ -8,13 +9,25 @@ android {
         applicationId "eu.appcom.testproject"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode rootProject.gitCommitCount()
-        versionName rootProject.gitTag()
+        versionCode versioning.getVersionCode()
+        versionName versioning.getVersionName()
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    versioning {
+        baseName = "testproject"
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.getName().contains("Release")) {
+            variant.outputs.all {
+                outputFileName = versioning.getApkName(variant)
+            }
         }
     }
 }
