@@ -86,7 +86,9 @@ android_phases:
       - $TRAVIS_BUILD_DIR/app/build/outputs/mapping/release/mapping.txt
     skip_cleanup: true
     on:
+      repo: G00fY2/android-ci-testproject
       tags: true
+      all_branches: true
 
 jobs:
   include:
