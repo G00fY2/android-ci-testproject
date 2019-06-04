@@ -76,6 +76,8 @@ android_phases:
   # only cache last gradle version used by the wrapper
   # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
   - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
+- phase: &before_deploy
+  - export TRAVIS_TAG="$(git tag --points-at)"
 - phase: &deploy
     provider: releases
     api_key:
@@ -86,9 +88,10 @@ android_phases:
       - $TRAVIS_BUILD_DIR/app/build/outputs/mapping/release/mapping.txt
     skip_cleanup: true
     on:
-      repo: G00fY2/android-ci-testproject
       tags: true
-      all_branches: true
+    name: $TRAVIS_TAG
+    tag_name: $TRAVIS_TAG
+    body: "Generated release from Travis CI for build $TRAVIS_BUILD_NUMBER"
 
 jobs:
   include:
@@ -104,4 +107,5 @@ jobs:
     before_script: *before_script
     script: "./gradlew assembleRelease --scan"
     before_cache: *before_cache
+    before_deploy: : *before_deploy
     deploy: *deploy
