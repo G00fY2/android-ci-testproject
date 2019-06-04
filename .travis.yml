@@ -88,7 +88,7 @@ android_phases:
     overwrite: true
     draft: false
     on:
-      branch: master
+      all_branches: true
       tags: true
     name: $TRAVIS_TAG
     tag_name: $TRAVIS_TAG
