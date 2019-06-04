@@ -21,7 +21,7 @@ stages:
 - name: Build debug
   if: branch IN (develop, master)
 - name: Build and deploy release tags
-  if: branch = master
+  if: tag IS present
 
 android_phases:
 - phase: &before_install
