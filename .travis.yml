@@ -107,5 +107,5 @@ jobs:
     before_script: *before_script
     script: "./gradlew assembleRelease --scan"
     before_cache: *before_cache
-    before_deploy: : *before_deploy
+    before_deploy: *before_deploy
     deploy: *deploy
