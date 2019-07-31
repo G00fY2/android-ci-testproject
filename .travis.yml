@@ -1,6 +1,6 @@
 language: minimal
 os: linux
-dist: bionic
+dist: xenial
 group: edge
 sudo: required
 git:
