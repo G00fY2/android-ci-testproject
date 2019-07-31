@@ -7,7 +7,7 @@ git:
   depth: false
 env:
   global:
-  # For updates check developer.android.com/studio#downloads (current 26.1.1)
+  # for updates check developer.android.com/studio#downloads (current 26.1.1)
   - ANDROID_SDK_TOOLS=sdk-tools-linux-4333796.zip
 cache:
   directories:
@@ -24,8 +24,7 @@ stages:
 android_phases:
 - phase: &before_install
   # check if OpenJDK8 is installed and install if missing
-  - if ! dpkg -s openjdk-8-jdk >/dev/null 2>&1; then sudo apt-get install openjdk-8-jdk; fi
-  # print available java versions with their path (must contain java-8-openjdk-amd64)
+  - if ! dpkg -s openjdk-8-jdk >/dev/null 2>&1; then sudo apt-get update; sudo apt-get install openjdk-8-jdk; fi
   - sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
   - java -version
   # set JAVA_HOME path
