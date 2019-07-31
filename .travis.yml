@@ -29,7 +29,8 @@ android_phases:
   - if ! dpkg -s openjdk-8-jdk >/dev/null 2>&1; then sudo apt-get update; sudo apt-get install openjdk-8-jdk; fi
   - java -version
   # print available java versions with their path (must contain java-8-openjdk-amd64)
-  - sudo update-alternatives --config java
+  - 2 | sudo update-alternatives --config java
+  - java -version
   # set JAVA_HOME path
   - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
   # download und unzip Android SDK Tools
