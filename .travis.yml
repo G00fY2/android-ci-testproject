@@ -7,8 +7,6 @@ git:
   depth: false
 env:
   global:
-  - ANDROID_API_LEVEL=28
-  - ANDROID_BUILD_TOOLS_VERSION=28.0.3
   # For updates check developer.android.com/studio#downloads (current 26.1.1)
   - ANDROID_SDK_TOOLS=sdk-tools-linux-4333796.zip
 cache:
@@ -32,23 +30,17 @@ android_phases:
   - java -version
   # set JAVA_HOME path
   - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-  # download und unzip Android SDK Tools
-  - wget -q https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
+  # download and unzip Android SDK command line tools
+  - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
   - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
-  # set SDK Tools path variable and ANDROID_HOME
+  # set SDK tools path variable and ANDROID_HOME
   - export PATH=$PATH:$HOME/sdk/tools/bin
   - export ANDROID_HOME=$HOME/sdk
   # create empty cfg file to prevent sdkmanager warning message
   - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
 - phase: &install
-  # latest SDK Platform-Tools
-  - yes | sdkmanager "platform-tools" >/dev/null
-  # defined SDK Platform
-  - yes | sdkmanager "platforms;android-$ANDROID_API_LEVEL" >/dev/null
-  # defined SDK Build-Tools
-  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOLS_VERSION" >/dev/null
-  # list installed and available packages
-  - sdkmanager --list
+  # accept licenses for all available packages that have not already been accepted
+  - yes | sdkmanager --licenses >/dev/null
 - phase: &before_script
   # set executable flag for gradle wrapper
   - chmod +x gradlew
@@ -73,7 +65,7 @@ android_phases:
   - rm -f  $HOME/.gradle/caches/journal-1/journal-1.lock
   - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
   - rm -f  $HOME/.gradle/caches/user-id.txt.lock
-  # only cache last gradle version used by the wrapper
+  # only cache latest gradle version used by the wrapper
   # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
   - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
 - phase: &deploy
