@@ -1,4 +1,4 @@
-language: generic
+language: java
 os: linux
 dist: bionic
 group: edge
