@@ -1,4 +1,4 @@
-language: minimal
+language: generic
 os: linux
 dist: bionic
 group: edge
