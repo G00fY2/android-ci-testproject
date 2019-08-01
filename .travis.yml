@@ -3,7 +3,7 @@ os: linux
 dist: bionic
 group: edge
 sudo: required
-jdk: openjdk10
+jdk: openjdk8
 git:
   depth: false
 env:
