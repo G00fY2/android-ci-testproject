@@ -25,6 +25,7 @@ stages:
 android_phases:
 - phase: &before_install
   - java -version
+  - sudo update-alternatives --config java
   # download and unzip Android SDK command line tools
   - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
   - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
