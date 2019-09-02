@@ -1,0 +1,30 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+    - develop
+    - master
+
+jobs:
+  my-build:
+    name: Build Debug
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_SDK_TOOLS: sdk-tools-linux-4333796.zip
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: set up sdkmanager
+      run: wget -nv https://dl.google.com/android/repository/${ANDROID_SDK_TOOLS}
+      run: unzip -q ${ANDROID_SDK_TOOLS} -d ${HOME/sdk}
+      run: export PATH=$PATH:$HOME/sdk/tools/bin
+      run: export ANDROID_HOME=$HOME/sdk
+      run: mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
+      run: yes | sdkmanager --licenses >/dev/null
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug
