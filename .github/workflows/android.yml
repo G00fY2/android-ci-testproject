@@ -22,6 +22,6 @@ jobs:
     - run: export PATH=$PATH:$HOME/sdk/tools/bin
     - run: export ANDROID_HOME=$HOME/sdk
     - run: mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
-    - run: yes | sdkmanager --licenses >/dev/null
+    - run: yes | $HOME/sdk/tools/bin/sdkmanager --licenses >/dev/null
     - name: Build with Gradle
       run: ./gradlew assembleDebug
