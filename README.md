@@ -1,4 +1,6 @@
 # android-ci-testproject
+GitHub Actions:&nbsp;&nbsp;[![Build Status](https://github.com/G00fY2/android-ci-testproject/workflows/Android%20CI/badge.svg)](https://github.com/G00fY2/android-ci-testproject/actions)
+
 Travis CI:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.com/G00fY2/android-ci-testproject.svg?branch=master)](https://travis-ci.com/G00fY2/android-ci-testproject)
 
 MS App Center:&nbsp;
