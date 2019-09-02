@@ -17,11 +17,5 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - run: wget -nv https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-    - run: unzip -q sdk-tools-linux-4333796.zip -d ${HOME/sdk}
-    - run: export PATH=$PATH:$HOME/sdk/tools/bin
-    - run: export ANDROID_HOME=$HOME/sdk
-    - run: mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
-    - run: yes | $HOME/sdk/tools/bin/sdkmanager --licenses >/dev/null
     - name: Build with Gradle
       run: ./gradlew assembleDebug
