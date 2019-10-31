@@ -16,6 +16,8 @@ cache:
 
 android_phases:
 - phase: &before_install
+  - java -version
+  - javac -version
   # download and unzip Android SDK command line tools
   - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
   - mkdir -p $HOME/sdk/cmdline-tools && unzip -q $ANDROID_SDK_CMD_TOOLS -d $HOME/sdk/cmdline-tools
