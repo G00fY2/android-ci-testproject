@@ -22,6 +22,8 @@ android_phases:
   # set SDK tools path variable and ANDROID_HOME
   - export PATH=$PATH:$HOME/sdk/cmdline-tools/tools/bin
   - export ANDROID_HOME=$HOME/sdk
+  # create empty cfg file to prevent sdkmanager warning message
+  - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
 - phase: &install
   # accept licenses for all available packages that have not already been accepted
   - yes | sdkmanager --licenses >/dev/null
