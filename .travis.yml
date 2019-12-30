@@ -14,8 +14,7 @@ cache:
   - $HOME/.gradle/wrapper/
   - $HOME/.android/build-cache/
 
-android_phases:
-- phase: &before_install
+before_install:
   # download and unzip Android SDK command line tools
   - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
   - mkdir -p $HOME/sdk/cmdline-tools && unzip -q $ANDROID_SDK_CMD_TOOLS -d $HOME/sdk/cmdline-tools
@@ -24,10 +23,10 @@ android_phases:
   - export ANDROID_HOME=$HOME/sdk
   # create empty cfg file to prevent sdkmanager warning message
   - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
-- phase: &install
+install:
   # accept licenses for all available packages that have not already been accepted
   - yes | sdkmanager --licenses >/dev/null
-- phase: &before_script
+before_script:
   # set executable flag for gradle wrapper
   - chmod +x gradlew
   # create dir for gradle settings
@@ -40,7 +39,7 @@ android_phases:
   - echo "org.gradle.caching=true" >> $HOME/.gradle/gradle.properties
   # log all gradle warnings
   - echo "org.gradle.warning.mode=all" >> $HOME/.gradle/gradle.properties
-- phase: &before_cache
+before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
   - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.bin
@@ -54,36 +53,27 @@ android_phases:
   # only cache latest gradle version used by the wrapper
   # list content in wrapper/dist sorted by modification time and remove entries starting by the second entry
   - ls -d $HOME/.gradle/wrapper/dists/* -1t | tail -n +2 | xargs rm -rf
-- phase: &deploy
-    provider: releases
-    api_key:
-      secure: F/ZJrNRJjfGkR+BYveoC0ecfnZjHv7AkizDo+e0LQ4skcYjBPx21hr8xMhftdZNz14/ZoWIQoOsA4guVNmMPH7xnoptmjkoV8N8T0POZlJfbqfbW9UCYzi7/Mi8B2Gk0tJJwWOXOiWIgbirS0/0xUAoXvL7djoU5JnikErd370GhV/z865fa3KRGCq63liRcKBsaXicB+Ynm36A7zXw5HcK7cl0qj1SU0sqyw/sPrVX9j4GYUaY7DQk07Ip3NBcqwKRgJv/OJti9tEcgMfOhak41iMiUkyMTCZHZ68+FxQzZBKRmE5K8MVjVKopg7lTU5YpxvDA5AP5PWZtUGBcO4Y0BdaObuPfdZfEdA+c4AyXQ+mlB36Tbb+oosCX0QT1dVjt9Hc1GRXe/rpN1O6caN//ROwpBAoqiTEUGmUt9Spq4mwKZq2eRp8fbLAaxTjKwiI1F6R2FhNMAkicg86+VgrMlMR1ZUISYk2rlkYpbNJrYHYwKWo+MSFex5Q2hTnpl182einDgv2+MFZnn4y5A+1APAMehA2tKFW5I27JpZsZTD68F1WDt2AFCr+C/2hGr58/g8a5GZu/77Gne5FcFciBKCe5WN8V7+59tKR7CzHM6Fw/QJmuuo4++HtEZ7qFxvFFLFPYTDZmSWTj/4gk2D2iGi/1VOlqSWqhaivkDPm8=
-    file_glob: true
-    file:
-      - $TRAVIS_BUILD_DIR/app/build/outputs/apk/release/*.apk
-      - $TRAVIS_BUILD_DIR/app/build/outputs/mapping/release/mapping.txt
-    skip_cleanup: true
-    draft: false
-    on:
-      tags: true
-    name: $TRAVIS_TAG
-    tag_name: $TRAVIS_TAG
-    body: "Generated release from Travis CI for build $TRAVIS_BUILD_NUMBER"
 
 jobs:
   include:
   - # Build debug
     if: branch IN (develop, master)
-    before_install: *before_install
-    install: *install
-    before_script: *before_script
     script: "./gradlew assembleDebug --scan"
-    before_cache: *before_cache
   - # Build and deploy release on tags
     if: tag IS present
-    before_install: *before_install
-    install: *install
-    before_script: *before_script
     script: "./gradlew assembleRelease --scan"
-    before_cache: *before_cache
-    deploy: *deploy
+    deploy:
+      provider: releases
+      api_key:
+        secure: F/ZJrNRJjfGkR+BYveoC0ecfnZjHv7AkizDo+e0LQ4skcYjBPx21hr8xMhftdZNz14/ZoWIQoOsA4guVNmMPH7xnoptmjkoV8N8T0POZlJfbqfbW9UCYzi7/Mi8B2Gk0tJJwWOXOiWIgbirS0/0xUAoXvL7djoU5JnikErd370GhV/z865fa3KRGCq63liRcKBsaXicB+Ynm36A7zXw5HcK7cl0qj1SU0sqyw/sPrVX9j4GYUaY7DQk07Ip3NBcqwKRgJv/OJti9tEcgMfOhak41iMiUkyMTCZHZ68+FxQzZBKRmE5K8MVjVKopg7lTU5YpxvDA5AP5PWZtUGBcO4Y0BdaObuPfdZfEdA+c4AyXQ+mlB36Tbb+oosCX0QT1dVjt9Hc1GRXe/rpN1O6caN//ROwpBAoqiTEUGmUt9Spq4mwKZq2eRp8fbLAaxTjKwiI1F6R2FhNMAkicg86+VgrMlMR1ZUISYk2rlkYpbNJrYHYwKWo+MSFex5Q2hTnpl182einDgv2+MFZnn4y5A+1APAMehA2tKFW5I27JpZsZTD68F1WDt2AFCr+C/2hGr58/g8a5GZu/77Gne5FcFciBKCe5WN8V7+59tKR7CzHM6Fw/QJmuuo4++HtEZ7qFxvFFLFPYTDZmSWTj/4gk2D2iGi/1VOlqSWqhaivkDPm8=
+      file_glob: true
+      file:
+        - $TRAVIS_BUILD_DIR/app/build/outputs/apk/release/*.apk
+        - $TRAVIS_BUILD_DIR/app/build/outputs/mapping/release/mapping.txt
+      skip_cleanup: true
+      draft: false
+      on:
+        tags: true
+      name: $TRAVIS_TAG
+      tag_name: $TRAVIS_TAG
+      body: "Generated release from Travis CI for build $TRAVIS_BUILD_NUMBER"
