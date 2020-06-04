@@ -64,16 +64,15 @@ jobs:
     script: "./gradlew assembleRelease --scan"
     deploy:
       provider: releases
-      api_key:
+      edge: true
+      token:
         secure: F/ZJrNRJjfGkR+BYveoC0ecfnZjHv7AkizDo+e0LQ4skcYjBPx21hr8xMhftdZNz14/ZoWIQoOsA4guVNmMPH7xnoptmjkoV8N8T0POZlJfbqfbW9UCYzi7/Mi8B2Gk0tJJwWOXOiWIgbirS0/0xUAoXvL7djoU5JnikErd370GhV/z865fa3KRGCq63liRcKBsaXicB+Ynm36A7zXw5HcK7cl0qj1SU0sqyw/sPrVX9j4GYUaY7DQk07Ip3NBcqwKRgJv/OJti9tEcgMfOhak41iMiUkyMTCZHZ68+FxQzZBKRmE5K8MVjVKopg7lTU5YpxvDA5AP5PWZtUGBcO4Y0BdaObuPfdZfEdA+c4AyXQ+mlB36Tbb+oosCX0QT1dVjt9Hc1GRXe/rpN1O6caN//ROwpBAoqiTEUGmUt9Spq4mwKZq2eRp8fbLAaxTjKwiI1F6R2FhNMAkicg86+VgrMlMR1ZUISYk2rlkYpbNJrYHYwKWo+MSFex5Q2hTnpl182einDgv2+MFZnn4y5A+1APAMehA2tKFW5I27JpZsZTD68F1WDt2AFCr+C/2hGr58/g8a5GZu/77Gne5FcFciBKCe5WN8V7+59tKR7CzHM6Fw/QJmuuo4++HtEZ7qFxvFFLFPYTDZmSWTj/4gk2D2iGi/1VOlqSWqhaivkDPm8=
-      file_glob: true
       file:
         - $TRAVIS_BUILD_DIR/app/build/outputs/apk/release/*.apk
         - $TRAVIS_BUILD_DIR/app/build/outputs/mapping/release/mapping.txt
-      skip_cleanup: true
       draft: false
       on:
         tags: true
       name: $TRAVIS_TAG
       tag_name: $TRAVIS_TAG
-      body: "Generated release from Travis CI for build $TRAVIS_BUILD_NUMBER"
+      release_notes: "Generated release from Travis CI for build $TRAVIS_BUILD_NUMBER"
