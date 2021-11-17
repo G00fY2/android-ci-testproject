@@ -1,5 +1,5 @@
 # android-ci-testproject
-GitHub Actions:&nbsp;&nbsp;[![Build Status](https://github.com/G00fY2/android-ci-testproject/workflows/Android%20CI/badge.svg)](https://github.com/G00fY2/android-ci-testproject/actions)
+GitHub Actions:&nbsp;&nbsp;[![Android CI](https://github.com/G00fY2/android-ci-testproject/actions/workflows/android.yml/badge.svg)](https://github.com/G00fY2/android-ci-testproject/actions/workflows/android.yml)
 
 Travis CI:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Build Status](https://app.travis-ci.com/G00fY2/android-ci-testproject.svg?branch=develop)](https://app.travis-ci.com/G00fY2/android-ci-testproject)
 
