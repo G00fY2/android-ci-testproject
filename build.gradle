@@ -1,14 +1,14 @@
 buildscript {
-    ext.kotlin_version = '1.4.21'
+    ext.kotlin_version = '1.6.0'
     repositories {
         google()
         mavenCentral()
-        jcenter()
+        gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'eu.appcom.gradle:android-versioning:1.0.2'
+        classpath 'de.nanogiants:android-versioning:2.4.0'
     }
 }
 
@@ -28,7 +28,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
 }
 

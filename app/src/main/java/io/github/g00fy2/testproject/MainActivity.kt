@@ -1,4 +1,4 @@
-package eu.appcom.testproject
+package io.github.g00fy2.testproject
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
