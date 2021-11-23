@@ -68,10 +68,10 @@ open class CreateGitHubIssueTask @Inject constructor() : DefaultTask() {
   private fun updateExistingIssue(issueID: String, title: String, body: String) {
     listOf("gh", "issue", "edit", issueID, "-t", title, "-b", body)
       .runCommand().let { result ->
-        if (result.first) {
-          logger.quiet("Successfully updated: ${result.second}")
+        if (result.succeeded) {
+          logger.quiet("Successfully updated: ${result.outputMessage}")
         } else {
-          logger.error("Updating issue $issueID failed: ${result.second}")
+          logger.error("Updating issue $issueID failed: ${result.outputMessage}")
         }
       }
   }
@@ -79,10 +79,10 @@ open class CreateGitHubIssueTask @Inject constructor() : DefaultTask() {
   private fun createNewIssue(title: String, body: String) {
     listOf("gh", "issue", "create", "-t", title, "-b", body, "-l", GITHUB_ISSUE_TAG)
       .runCommand().let { result ->
-        if (result.first) {
-          logger.quiet("Successfully created: ${result.second}")
+        if (result.succeeded) {
+          logger.quiet("Successfully created: ${result.outputMessage}")
         } else {
-          logger.error("Creating new issue failed: ${result.second}")
+          logger.error("Creating new issue failed: ${result.outputMessage}")
         }
       }
   }
@@ -90,10 +90,13 @@ open class CreateGitHubIssueTask @Inject constructor() : DefaultTask() {
   private fun getLatestDependencyUpdateIssueID(): String? {
     return listOf("gh", "issue", "list", "-l", GITHUB_ISSUE_TAG, "-s", "open")
       .runCommand().let { result ->
-        if (result.first) {
-          Regex("^+\\d*\\s").find(result.second)?.value?.trim() ?: ""
+        if (result.succeeded && result.outputMessage.isNotBlank()) {
+          Regex("^+\\d*\\s").find(result.outputMessage)?.value?.trim() ?: ""
+        } else if (result.succeeded) {
+          logger.quiet("No open $GITHUB_ISSUE_TAG issue found.")
+          ""
         } else {
-          logger.error("Listing issues failed: ${result.second}")
+          logger.error("Listing issues failed: ${result.outputMessage}")
           ""
         }
       }
@@ -107,15 +110,17 @@ open class CreateGitHubIssueTask @Inject constructor() : DefaultTask() {
       .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
   }
 
-  private fun List<String>.runCommand(): Pair<Boolean, String> {
+  private fun List<String>.runCommand(): ProcessResult {
     return try {
       ProcessBuilder(this).redirectErrorStream(true).start()
         .run {
           waitFor(10, TimeUnit.SECONDS)
-          Pair(exitValue() == 0, inputStream.bufferedReader().use { it.readText().trim() })
+          ProcessResult(exitValue() == 0, inputStream.bufferedReader().use { it.readText().trim() })
         }
     } catch (e: Exception) {
       throw GradleException("${e.message ?: "Error executing command: $this"}\nMake sure the GitHub CLI is available.")
     }
   }
+
+  data class ProcessResult(val succeeded: Boolean, val outputMessage: String)
 }
