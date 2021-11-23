@@ -109,14 +109,11 @@ open class CreateGitHubIssueTask @Inject constructor() : DefaultTask() {
 
   private fun List<String>.runCommand(): Pair<Boolean, String> {
     return try {
-      ProcessBuilder(this).start().run {
-        waitFor(10, TimeUnit.SECONDS)
-        if (exitValue() == 0) {
-          Pair(true, inputStream.bufferedReader().use { it.readText().trim() })
-        } else {
-          Pair(false, errorStream.bufferedReader().use { it.readText().trim() })
+      ProcessBuilder(this).redirectErrorStream(true).start()
+        .run {
+          waitFor(10, TimeUnit.SECONDS)
+          Pair(exitValue() == 0, inputStream.bufferedReader().use { it.readText().trim() })
         }
-      }
     } catch (e: Exception) {
       throw GradleException("${e.message ?: "Error executing command: $this"}\nMake sure the GitHub CLI is available.")
     }
