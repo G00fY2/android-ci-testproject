@@ -28,8 +28,12 @@ class GitHubIssuePlugin : Plugin<Project> {
 
 open class CreateGitHubIssueTask @Inject constructor() : DefaultTask() {
 
+  companion object {
+    const val GITHUB_ISSUE_TAG = "dependency-update" // this issue tag needs to exist in the github project
+  }
+
   @TaskAction
-  fun createIssue() {
+  fun createGitHubIssueFromReportFile() {
     val expectedReportFile = project.file("${project.buildDir}/dependencyUpdates/ci-report.txt")
     if (expectedReportFile.exists()) {
       val fileContent = expectedReportFile.readLines()
@@ -73,7 +77,7 @@ open class CreateGitHubIssueTask @Inject constructor() : DefaultTask() {
   }
 
   private fun createNewIssue(title: String, body: String) {
-    listOf("gh", "issue", "create", "-t", title, "-b", body, "-l", "dependency-update")
+    listOf("gh", "issue", "create", "-t", title, "-b", body, "-l", GITHUB_ISSUE_TAG)
       .runCommand().let { result ->
         if (result.first) {
           logger.quiet("Successfully created: ${result.second}")
@@ -84,7 +88,7 @@ open class CreateGitHubIssueTask @Inject constructor() : DefaultTask() {
   }
 
   private fun getLatestDependencyUpdateIssueID(): String? {
-    return listOf("gh", "issue", "list", "-l", "dependency-update", "-s", "open")
+    return listOf("gh", "issue", "list", "-l", GITHUB_ISSUE_TAG, "-s", "open")
       .runCommand().let { result ->
         if (result.first) {
           Regex("^+\\d*\\s").find(result.second)?.value?.trim() ?: ""
