@@ -14,8 +14,8 @@ object Versions {
   const val sonarqube = "3.3"
 
   // android
-  const val appcompat = "1.4.0"
-  const val constraintLayout = "2.1.2"
+  const val appcompat = "1.3.1"
+  const val constraintLayout = "2.1.1"
 
   fun maturityLevel(version: String): Int {
     val levels = listOf("alpha", "beta", "m", "rc")
