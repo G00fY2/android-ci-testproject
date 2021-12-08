@@ -15,6 +15,11 @@ sonarqube {
     property("sonar.projectKey", "G00fY2_android-ci-testproject")
     property("sonar.organization", "g00fy2")
     property("sonar.host.url", "https://sonarcloud.io")
+    property("sonar.projectDescription", "Sample project to test continuous integration platforms")
+    property("sonar.links.homepage", "https://github.com/G00fY2/android-ci-testproject")
+    property("sonar.links.ci", "https://github.com/G00fY2/android-ci-testproject/actions")
+    property("sonar.links.issue", "https://github.com/G00fY2/android-ci-testproject/issues")
+    property("sonar.links.scm", "https://github.com/G00fY2/android-ci-testproject")
   }
 }
 
