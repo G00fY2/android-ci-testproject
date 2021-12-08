@@ -6,7 +6,7 @@ object Versions {
   const val androidBuildTools = "31.0.0"
 
   // plugins
-  const val androidGradle = "7.0.3"
+  const val androidGradle = "7.0.4"
   const val kotlin = "1.6.0"
 
   const val nanoGiantsVersioning = "2.4.0"
