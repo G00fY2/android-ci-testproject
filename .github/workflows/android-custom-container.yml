@@ -9,6 +9,7 @@ on:
 jobs:
   my-build:
     name: Build Debug
+    runs-on: ubuntu-latest
     container: eclipse-temurin:11-jdk
 
     steps:
