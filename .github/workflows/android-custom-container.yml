@@ -22,9 +22,11 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Install wget
+        run: apt-get update && apt-get install -y wget
       - name: Download and unzip Android SDK command line tools
         run: |
-          curl https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
+          wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
           mkdir -p $HOME/sdk/cmdline-tools && unzip -q $ANDROID_SDK_CMD_TOOLS -d $HOME/sdk/cmdline-tools
           mv $HOME/sdk/cmdline-tools/cmdline-tools $HOME/sdk/cmdline-tools/latest
       - name: Set SDK tools path variable and ANDROID_HOME
