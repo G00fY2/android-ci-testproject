@@ -1,0 +1,19 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+    - develop
+    - master
+
+jobs:
+  my-build:
+    name: Build Debug
+    container: eclipse-temurin:11-jdk
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug
