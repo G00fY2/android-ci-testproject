@@ -13,11 +13,9 @@ jobs:
   my-build:
     name: Build Debug
     runs-on: ubuntu-latest
-    container: eclipse-temurin:11-jdk
+    container: openjdk:11-slim
 
     steps:
-      - name: Install git and unzip
-        run: apt-get update && apt-get install -y git && apt-get install -y unzip
       - name: Download and unzip Android SDK command line tools
         run: |
           curl -s -o $ANDROID_SDK_CMD_TOOLS https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
