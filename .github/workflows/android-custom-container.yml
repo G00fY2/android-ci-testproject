@@ -29,8 +29,8 @@ jobs:
           mv $HOME/sdk/cmdline-tools/cmdline-tools $HOME/sdk/cmdline-tools/latest
       - name: Set SDK tools path variable and ANDROID_HOME
         run: |
-          export PATH=$PATH:$HOME/sdk/cmdline-tools/latest/bin
-          export ANDROID_SDK_ROOT=$HOME/sdk
+          echo "${HOME}/sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "ANDROID_SDK_ROOT=${HOME}/sdk" >> $GITHUB_ENV
       - name: Accept licenses for all available packages
         run: yes 2>/dev/null | ${ANDROID_SDK_ROOT}/tools/bin/sdkmanager --licenses >/dev/null
       - name: Build with Gradle
