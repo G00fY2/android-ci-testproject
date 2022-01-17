@@ -6,17 +6,32 @@ on:
     - develop
     - master
 
+env:
+  ANDROID_SDK_CMD_TOOLS: commandlinetools-linux-7583922_latest.zip
+
 jobs:
   my-build:
     name: Build Debug
     runs-on: ubuntu-latest
     container: eclipse-temurin:11-jdk
 
+
     steps:
       - name: Install git
-        run: apt-get install git
+        run: apt-get update && apt-get install git
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Download and unzip Android SDK command line tools
+        run: |
+          wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
+          mkdir -p $HOME/sdk/cmdline-tools && unzip -q $ANDROID_SDK_CMD_TOOLS -d $HOME/sdk/cmdline-tools
+          mv $HOME/sdk/cmdline-tools/cmdline-tools $HOME/sdk/cmdline-tools/latest
+      - name: Set SDK tools path variable and ANDROID_HOME
+        run: |
+          export PATH=$PATH:$HOME/sdk/cmdline-tools/latest/bin
+          export ANDROID_SDK_ROOT=$HOME/sdk
+      - name: Accept licenses for all available packages
+        run: yes 2>/dev/null | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --licenses >/dev/null
       - name: Build with Gradle
         run: ./gradlew assembleDebug
