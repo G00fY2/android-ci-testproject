@@ -10,7 +10,7 @@ jobs:
   my-build:
     name: Build Debug
     runs-on: ubuntu-latest
-    container: eclipse-temurin:11-jdk
+    container: openjdk:11-jdk
 
     steps:
       - uses: actions/checkout@v2
