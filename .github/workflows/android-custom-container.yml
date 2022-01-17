@@ -25,7 +25,8 @@ jobs:
       - name: Download and unzip Android SDK command line tools
         run: |
           curl -o sdk.zip https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
-          mkdir $HOME/sdk && unzip sdk.zip -d $HOME/sdk
+          mkdir -p $HOME/sdk && unzip -q sdk.zip -d $HOME/sdk
+          mv $HOME/sdk/cmdline-tools $HOME/sdk/cmdline-tools/latest
       - name: Set SDK tools path variable and ANDROID_HOME
         run: |
           echo "${HOME}/sdk/cmdline-tools/bin" >> $GITHUB_PATH
