@@ -16,8 +16,8 @@ jobs:
     container: ubuntu:focal
 
     steps:
-      - name: Install Java 11
-        run: apt-get update && apt-get install --no-install-recommends -y openjdk-11-jdk
+      - name: Install Java 11 and required packages
+        run: apt-get update && apt-get install --no-install-recommends -y openjdk-11-jdk curl unzip git
       - name: Download and unzip Android SDK command line tools
         run: |
           curl -s -o $ANDROID_SDK_CMD_TOOLS https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
