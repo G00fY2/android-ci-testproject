@@ -10,9 +10,11 @@ jobs:
   my-build:
     name: Build Debug
     runs-on: ubuntu-latest
-    container: openjdk:11-jdk-slim
+    container: eclipse-temurin:11-jdk
 
     steps:
+      - name: Install git
+        run: apt-get install git
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
