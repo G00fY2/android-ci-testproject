@@ -32,6 +32,6 @@ jobs:
           export PATH=$PATH:$HOME/sdk/cmdline-tools/latest/bin
           export ANDROID_SDK_ROOT=$HOME/sdk
       - name: Accept licenses for all available packages
-        run: yes 2>/dev/null | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --licenses >/dev/null
+        run: yes 2>/dev/null | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses >/dev/null
       - name: Build with Gradle
         run: ./gradlew assembleDebug
