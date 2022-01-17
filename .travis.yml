@@ -17,8 +17,8 @@ cache:
 before_install:
   # download and unzip Android SDK command line tools
   - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
-  - mkdir -p $HOME/sdk && unzip -q $ANDROID_SDK_CMD_TOOLS -d $HOME/sdk
-  - mv $HOME/sdk/cmdline-tools $HOME/sdk/cmdline-tools/latest
+  - mkdir -p $HOME/sdk/cmdline-tools && unzip -q $ANDROID_SDK_CMD_TOOLS -d $HOME/sdk/cmdline-tools
+  - mv $HOME/sdk/cmdline-tools/cmdline-tools $HOME/sdk/cmdline-tools/latest
   # set SDK tools path variable and ANDROID_HOME
   - export PATH=$PATH:$HOME/sdk/cmdline-tools/latest/bin
   - export ANDROID_SDK_ROOT=$HOME/sdk
