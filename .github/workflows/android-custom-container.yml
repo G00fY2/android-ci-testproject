@@ -13,11 +13,11 @@ jobs:
   my-build:
     name: Build Debug
     runs-on: ubuntu-latest
-    container: openjdk:11-slim
+    container: ubuntu:focal
 
     steps:
-      - name: Install packages
-        run: apt-get update && apt-get install -y git unzip curl openssh-client
+      - name: Install Java 11
+        run: apt-get update && apt-get install --no-install-recommends -y openjdk-11-jdk
       - name: Download and unzip Android SDK command line tools
         run: |
           curl -s -o $ANDROID_SDK_CMD_TOOLS https://dl.google.com/android/repository/$ANDROID_SDK_CMD_TOOLS
