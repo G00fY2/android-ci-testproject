@@ -7,7 +7,7 @@ git:
 env:
   global:
   # for updates check https://developer.android.com/studio#downloads
-  - ANDROID_SDK_CMD_TOOLS=commandlinetools-linux-7583922_latest.zip
+  - ANDROID_SDK_CMD_TOOLS=commandlinetools-linux-8092744_latest.zip
 cache:
   directories:
   - $HOME/.gradle/caches/
