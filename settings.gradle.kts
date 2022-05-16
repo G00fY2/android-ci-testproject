@@ -3,16 +3,17 @@ rootProject.name = "android-ci-testproject"
 include(":app")
 
 dependencyResolutionManagement {
-    repositories {
-      google()
-      gradlePluginPortal()
-      mavenCentral()
-    }
+  repositories {
+    google()
+    gradlePluginPortal()
+    mavenCentral()
+  }
 }
 
 pluginManagement {
-    repositories {
-        google()
-        gradlePluginPortal()
-    }
+  repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+  }
 }

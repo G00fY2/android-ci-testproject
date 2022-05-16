@@ -1,21 +1,20 @@
 object Versions {
 
   const val androidMinSdk = 21
-  const val androidCompileSdk = 31
-  const val androidTargetSdk = 31
-  const val androidBuildTools = "31.0.0"
+  const val androidCompileSdk = 32
+  const val androidTargetSdk = 32
+  const val androidBuildTools = "32.0.0"
 
   // plugins
-  const val androidGradle = "7.0.4"
-  const val kotlin = "1.6.0"
+  const val androidGradle = "7.2.0"
+  const val kotlin = "1.6.21"
 
-  const val nanoGiantsVersioning = "2.4.0"
-  const val gradleVersions = "0.39.0"
+  const val gradleVersions = "0.42.0"
   const val sonarqube = "3.3"
 
   // android
-  const val appcompat = "1.3.1"
-  const val constraintLayout = "2.1.1"
+  const val appcompat = "1.4.1"
+  const val constraintLayout = "2.1.3"
 
   fun maturityLevel(version: String): Int {
     val levels = listOf("alpha", "beta", "m", "rc")

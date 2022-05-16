@@ -10,8 +10,7 @@ object Plugins {
     const val kotlin = "kotlin"
   }
 
-  object Misc {
-    const val nanoGiantsVersioning = "de.nanogiants.android-versioning"
+  object GradleVersions {
     const val gradleVersions = "com.github.ben-manes.versions"
   }
 

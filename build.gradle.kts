@@ -4,8 +4,7 @@ import com.github.benmanes.gradle.versions.reporter.result.Result
 plugins {
   id(Plugins.Android.application) version Versions.androidGradle apply false
   kotlin(Plugins.Kotlin.androidGradle) version Versions.kotlin apply false
-  id(Plugins.Misc.nanoGiantsVersioning) version Versions.nanoGiantsVersioning apply false
-  id(Plugins.Misc.gradleVersions) version Versions.gradleVersions
+  id(Plugins.GradleVersions.gradleVersions) version Versions.gradleVersions
   id(Plugins.Quality.sonarqube) version Versions.sonarqube
   id("io.github.g00fy2.github-issue-plugin")
 }

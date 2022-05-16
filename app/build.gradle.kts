@@ -1,7 +1,6 @@
 plugins {
   id(Plugins.Android.application)
   id(Plugins.Kotlin.android)
-  id(Plugins.Misc.nanoGiantsVersioning)
 }
 
 android {
@@ -11,8 +10,8 @@ android {
     applicationId = "io.github.g00fy2.quickiesample"
     minSdk = Versions.androidMinSdk
     targetSdk = Versions.androidTargetSdk
-    versionCode = versioning.getVersionCode()
-    versionName = versioning.getVersionName()
+    versionName = GitUtils.gitTag
+    versionCode = GitUtils.gitCommitCount
     setProperty("archivesBaseName", "testproject")
   }
   buildTypes {
